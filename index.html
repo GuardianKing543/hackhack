@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Enhanced Prank</title>
+  <style>
+    /* Fullscreen styling */
+    body, html {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      background-color: black;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      overflow: hidden; /* Prevents scrolling */
+    }
+
+    /* Flashing background colors */
+    @keyframes flashingColors {
+      0% { background-color: red; }
+      25% { background-color: yellow; }
+      50% { background-color: green; }
+      75% { background-color: blue; }
+      100% { background-color: red; }
+    }
+
+    body {
+      animation: flashingColors 0.5s infinite;
+    }
+
+    /* Warning box styling */
+    .warning-box {
+      text-align: center;
+      padding: 20px;
+      border: 5px solid red;
+      background-color: black;
+      color: white;
+      font-size: 2rem;
+      width: 90%;
+      position: relative;
+      animation: shakeText 0.1s infinite;
+    }
+
+    .countdown {
+      font-size: 3rem;
+      margin-top: 20px;
+      color: yellow;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes shakeText {
+      0% { color: red; }
+      50% { color: white; }
+      100% { color: red; }
+    }
+
+    /* Fullscreen Trigger */
+    #fullscreen-trigger {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    /* Screen Shake Animation */
+    @keyframes screenShake {
+      0% { transform: translateX(0); }
+      10% { transform: translateX(-10px); }
+      20% { transform: translateX(10px); }
+      30% { transform: translateX(-10px); }
+      40% { transform: translateX(10px); }
+      50% { transform: translateX(0); }
+    }
+
+    /* Play Button */
+    #play-button {
+      position: absolute;
+      bottom: 20px;
+      padding: 10px 20px;
+      background-color: red;
+      color: white;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Instructions */
+    #instructions {
+      position: absolute;
+      bottom: 80px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="warning-box">
+    <h1>⚠️ WARNING: SYSTEM FAILURE ⚠️</h1>
+    <p>Your device will shut down in:</p>
+    <div class="countdown" id="countdown">10</div>
+  </div>
+
+  <div id="fullscreen-trigger"></div>
+
+  <!-- Audio file -->
+  <audio id="alert-sound" src="https://github.com/your-username/your-repo-name/raw/main/docs/audio/Black-Microwave-Earrape.ogg"></audio>
+
+  <script>
+    // Vibration for Android
+    if (navigator.vibrate) {
+      navigator.vibrate([1000, 500, 1000, 500, 1000]); // Strong vibration pattern
+    }
+
+    // Play alert sound every few seconds
+    function playAlertSound() {
+      const alertSound = document.getElementById('alert-sound');
+      if (alertSound) alertSound.play();
+    }
+    setInterval(playAlertSound, 5000); // Play every 5 seconds
+
+    // Countdown timer
+    let countdownElement = document.getElementById("countdown");
+    let countdownValue = 10;
+
+    let countdownInterval = setInterval(function() {
+      countdownValue--;
+      countdownElement.textContent = countdownValue;
+
+      if (countdownValue <= 0) {
+        clearInterval(countdownInterval);
+        countdownElement.textContent = "Shutting down...";
+        // Trigger screen shake effect
+        document.body.style.animation = 'screenShake 0.5s';
+      }
+    }, 1000);
+
+    // Function to request fullscreen
+    function requestFullscreen() {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else if (document.documentElement.webkitRequestFullscreen) { /* Safari */
+        document.documentElement.webkitRequestFullscreen();
+      } else if (document.documentElement.msRequestFullscreen) { /* IE11 */
+        document.documentElement.msRequestFullscreen();
+      }
+    }
+
+    // Function to play background music
+    function playBackgroundMusic() {
+      const audio = document.getElementById('background-music');
+      audio.play().catch(error => {
+        console.log('Audio play failed:', error);
+      });
+    }
+
+    // Request fullscreen on page load and on click/tap
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('fullscreen-trigger').addEventListener('click', requestFullscreen);
+      document.getElementById('play-button').addEventListener('click', function() {
+        playBackgroundMusic();
+        requestFullscreen();
+      });
+    });
+  </script>
+</body>
+</html>
+
