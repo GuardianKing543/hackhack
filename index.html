@@ -121,7 +121,7 @@
   <div id="fullscreen-trigger"></div>
 
   <!-- Audio file -->
-  <audio id="alert-sound" src="https://github.com/GuardianKing543/hackhack/blob/main/Black%20Microwave%20Earrape.ogg"></audio>
+  <audio id="alert-sound" src="https://raw.githubusercontent.com/GuardianKing543/hackhack/main/Black-Microwave-Earrape.ogg" preload="auto"></audio>
 
   <script>
     // Vibration for Android
@@ -129,12 +129,15 @@
       navigator.vibrate([1000, 500, 1000, 500, 1000]); // Strong vibration pattern
     }
 
-    // Play alert sound every few seconds
+    // Function to play alert sound
     function playAlertSound() {
       const alertSound = document.getElementById('alert-sound');
-      if (alertSound) alertSound.play();
+      if (alertSound) {
+        alertSound.play().catch(error => {
+          console.log('Audio play failed:', error);
+        });
+      }
     }
-    setInterval(playAlertSound, 5000); // Play every 5 seconds
 
     // Countdown timer
     let countdownElement = document.getElementById("countdown");
@@ -163,23 +166,17 @@
       }
     }
 
-    // Function to play background music
-    function playBackgroundMusic() {
-      const audio = document.getElementById('background-music');
-      audio.play().catch(error => {
-        console.log('Audio play failed:', error);
-      });
-    }
-
     // Request fullscreen on page load and on click/tap
     document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('fullscreen-trigger').addEventListener('click', requestFullscreen);
-      document.getElementById('play-button').addEventListener('click', function() {
-        playBackgroundMusic();
+      // Add a click event to the body to trigger the audio
+      document.body.addEventListener('click', function() {
+        playAlertSound();
         requestFullscreen();
       });
+
+      // Optionally, also play sound on a timer if needed
+      setTimeout(playAlertSound, 1000); // Play sound after 1 second
     });
   </script>
 </body>
 </html>
-
